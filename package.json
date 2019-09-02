@@ -1,0 +1,25 @@
+{
+  "name": "off-you-go",
+  "version": "1.0.0",
+  "description": "",
+  "main": "walkDownStairs.processor.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "compile": "tsc --build tsconfig.json",
+    "start:dev": "webpack-dev-server"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync-webpack-plugin": "^2.2.2",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.2",
+    "webpack": "^4.35.2",
+    "webpack-cli": "^3.3.5",
+    "webpack-dev-server": "^3.8.0"
+  },
+  "dependencies": {
+    "browser-sync": "^2.26.7"
+  }
+}
