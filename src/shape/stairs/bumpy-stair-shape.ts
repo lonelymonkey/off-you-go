@@ -1,6 +1,6 @@
 import { BumpyStairOptions } from '../../_models/shape_model';
-import { LMS_spring } from '../../../lib/lms-games/generic-shape.js';
 import { Stairs } from './stairs-shape';
+import { ShapeGeneratorHelper } from '../../_helpers';
 
 export class BumpyStair extends Stairs {
     x: number;
@@ -42,11 +42,7 @@ export class BumpyStair extends Stairs {
         for (let i = 0; i < this.length; i++) {
             const posX = this.x + this.borderWidth + i * (this.unitWidth);
             if (i > 0 && i < this.length) {
-                const spring = new LMS_spring({
-                    x1: posX, y1: this.y + 2, x2: posX, y2: this.y + this.unitHeight - 2,
-                    windings: 2, width: 10, offset: 1, col1: '#1caf9f', col2: '#1caf9f',
-                    lineWidth: 2
-                });
+                const spring = ShapeGeneratorHelper.getLMSSpring(posX, this.y + 2, posX, this.y + this.unitHeight - 2, 2, 10, 1, '#1caf9f', '#1caf9f', 2);
                 spring.draw(tFrame, ctx, canvas);
             }
         }

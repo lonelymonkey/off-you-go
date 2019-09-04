@@ -1,6 +1,6 @@
 import { CollapseStairOptions } from '../../_models/shape_model';
-import { LMS_collapse } from '../../../lib/lms-games/generic-shape.js';
 import { Stairs } from './../stairs/stairs-shape';
+import { ShapeGeneratorHelper } from '../../_helpers';
 
 export class CollapseStair extends Stairs {
     x: number;
@@ -51,10 +51,7 @@ export class CollapseStair extends Stairs {
         }
 
         if (this.crackPercentage > 0.1) {
-            const collapse = new LMS_collapse({
-                x1: this.x, y1: this.y,
-                width: this.unitWidth, height: this.unitHeight, length: this.length, crackPercentage: this.crackPercentage
-            });
+            const collapse = ShapeGeneratorHelper.getLMSCollapse(this.x, this.y, this.unitWidth, this.unitHeight, this.length, this.crackPercentage);
             collapse.draw(tFrame, ctx, canvas);
         }
         ctx.restore();

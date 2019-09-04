@@ -1,5 +1,6 @@
 import { StairTimerOptions } from '../_models/shape_model';
 import { LMS_Text, LMS_hourglass } from '../../lib/lms-games/generic-shape.js';
+import { ShapeGeneratorHelper } from '../_helpers';
 
 export class WalkDownStairTimer {
     x: number;
@@ -15,17 +16,9 @@ export class WalkDownStairTimer {
         const { x, y, color } = options;
         this.x = x;
         this.y = y;
-        this.hourGlass = new LMS_hourglass({
-            x: this.x, y: this.y, width: 13, height: 14, color: color,
-        });
+        this.hourGlass = ShapeGeneratorHelper.getLMSHourglass(this.x, this.y, 13, 14, color);
         this.time = 0;
-        this.textObj = new LMS_Text({
-            text: ': ' + this.time,
-            x: x + 10, y: y - 35,
-            font: '14px sans-serif',
-            color: color,
-            align: 'left',
-        });
+        this.textObj = ShapeGeneratorHelper.getLMSText(': ' + this.time, x + 10, y -35, '14px sans-serif', color, 'left');
         this.state = 'paused';
         this.preState = 'paused';
         this.lastTFrame = 0;

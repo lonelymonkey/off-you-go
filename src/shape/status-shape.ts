@@ -1,4 +1,5 @@
 import { LMS_Text } from '../../lib/lms-games/generic-shape.js';
+import { ShapeGeneratorHelper } from '../_helpers';
 
 export class WalkDownStairStatus {
     textObj: LMS_Text;
@@ -7,13 +8,7 @@ export class WalkDownStairStatus {
 
     constructor(options: any) {
         const { x, y, score, color } = options;
-        this.textObj = new LMS_Text({
-            text: 'Level: 1  Score: 0',
-            x: x, y: y,
-            font: '14px sans-serif',
-            color: color,
-            align: 'center',
-        });
+        this.textObj = ShapeGeneratorHelper.getLMSText('Level: 1  Score: 0', x, y, '14px sans-serif', color, 'center');
         this.score = score || 0;
         this.level = 1;
     }

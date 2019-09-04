@@ -1,10 +1,9 @@
 import { Processor } from './walkDownStairs.processor';
 import { UserControl } from './walkDownStairs.userControl';
 import { LMS_GameRenderer } from '../lib/lms-games/LMS_GameRenderer.js';
-import { LMS_Text, LMS_heart, LMS_HpBar } from '../lib/lms-games/generic-shape.js';
 import { Player, WalkDownStairTimer, WalkDownStairStatus, NormalStair } from './shape';
 import { OffYouGoConfig, defaultOffYouGoConfig, StageConfig, defaultStageConfig, KeyValuePair } from './_models/config';
-import { MathHelper } from './_helpers';
+import { MathHelper, ShapeGeneratorHelper } from './_helpers';
 import { GameStore } from './_models/game-store';
 import { GameController } from './_models/game-controller';
 
@@ -51,21 +50,12 @@ export class WalkDownStairs {
         this.stage0Config = { ...this.config };
         this.container = document.getElementById(id);
         this.createCanvas();
-        this.gameStore.fpsObj = new LMS_Text({
-            text: '', x: this.canvas.width - 60, y: 20, font: '14px sans-serif',
-            color: '#0095DD', align: 'left',
-        });
+        this.gameStore.fpsObj = ShapeGeneratorHelper.getLMSText('', this.canvas.width - 60, 20, '14px sans-serif', '#0095DD', 'left');
         // load user control
         this.gameManager.userControl.load(this.canvasUI);
 
         // test drawing
-        const heart = new LMS_heart({
-            x: 50,
-            y: 100,
-            size: 15,
-            color: '#FF0000',
-            dy: this.config.stiarRisingSpeed,
-        });
+        const heart = ShapeGeneratorHelper.getLMSHeart(50, 100, 15, '#FF0000', this.config.stiarRisingSpeed);
         this.gameStore.shapeObjects.hearts.push(heart);
 
         Promise.all(this.getPlayerAssets())
@@ -128,10 +118,7 @@ export class WalkDownStairs {
         });
 
         this.gameStore.shapeObjects.players.push(player);
-        const hpBar = new LMS_HpBar({
-            x: 10, y: 5, width: 75, height: 15, bgColor: 'rgba(255, 255, 255, 0.5)',
-            borderColor: 'rgba(194, 0, 0, 0.5)', hpColor: 'rgba(255, 0, 0, 0.5)', hp: 1, borderWidth: 2,
-        });
+        const hpBar = ShapeGeneratorHelper.getLMSHpBar(10, 5, 75, 15, 'rgba(255, 255, 255, 0.5)', 'rgba(194, 0, 0, 0.5)', 'rgba(255, 0, 0, 0.5)', 1, 2);
         const status = new WalkDownStairStatus({ x: canvas.width / 2 - 20, y: 20, color: config.statusTextColor });
         const timer = new WalkDownStairTimer({ x: canvas.width / 2 + 75, y: 55, color: config.statusTextColor });
 
