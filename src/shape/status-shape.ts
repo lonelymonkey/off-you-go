@@ -8,7 +8,7 @@ export class WalkDownStairStatus {
 
     constructor(options: any) {
         const { x, y, score, color } = options;
-        this.textObj = ShapeGeneratorHelper.getLMSText('Level: 1  Score: 0', x, y, '14px sans-serif', color, 'center');
+        this.textObj = ShapeGeneratorHelper.getLMSText('Level: 1  Score: 0', x, y, color, 'center');
         this.score = score || 0;
         this.level = 1;
     }

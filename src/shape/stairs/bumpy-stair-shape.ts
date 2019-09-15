@@ -1,6 +1,6 @@
 import { BumpyStairOptions } from '../../_models/shape_model';
 import { Stairs } from './stairs-shape';
-import { ShapeGeneratorHelper } from '../../_helpers';
+import { LMS_spring } from '../../../lib/lms-games/generic-shape.js';
 
 export class BumpyStair extends Stairs {
     x: number;
@@ -40,12 +40,27 @@ export class BumpyStair extends Stairs {
             this.unitWidth * this.length - 2 * this.borderWidth,
             this.unitHeight - 2 * this.borderWidth);
         for (let i = 0; i < this.length; i++) {
-            const posX = this.x + this.borderWidth + i * (this.unitWidth);
             if (i > 0 && i < this.length) {
-                const spring = ShapeGeneratorHelper.getLMSSpring(posX, this.y + 2, posX, this.y + this.unitHeight - 2, 2, 10, 1, '#1caf9f', '#1caf9f', 2);
+                const spring = this.getLMSSpring(i);
                 spring.draw(tFrame, ctx, canvas);
             }
         }
         ctx.restore();
+    }
+
+    private getLMSSpring(index: number): LMS_spring {
+        const posX = this.x + this.borderWidth + index * (this.unitWidth);
+        return new LMS_spring({
+            x1: posX,
+            y1: this.y + 2,
+            x2: posX,
+            y2: this.y + this.unitHeight - 2,
+            windings: 2,
+            width: 10,
+            offset: 1,
+            col1: '#1caf9f',
+            col2: '#1caf9f',
+            lineWidth: 2
+        });
     }
 }

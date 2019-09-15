@@ -50,7 +50,7 @@ export class WalkDownStairs {
         this.stage0Config = { ...this.config };
         this.container = document.getElementById(id);
         this.createCanvas();
-        this.gameStore.fpsObj = ShapeGeneratorHelper.getLMSText('', this.canvas.width - 60, 20, '14px sans-serif', '#0095DD', 'left');
+        this.gameStore.fpsObj = ShapeGeneratorHelper.getLMSText('', this.canvas.width - 60, 20, '#0095DD', 'left');
         // load user control
         this.gameManager.userControl.load(this.canvasUI);
 

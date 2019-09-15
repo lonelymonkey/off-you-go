@@ -16,9 +16,9 @@ export class WalkDownStairTimer {
         const { x, y, color } = options;
         this.x = x;
         this.y = y;
-        this.hourGlass = ShapeGeneratorHelper.getLMSHourglass(this.x, this.y, 13, 14, color);
+        this.hourGlass = ShapeGeneratorHelper.getLMSHourglass(this.x, this.y, color);
         this.time = 0;
-        this.textObj = ShapeGeneratorHelper.getLMSText(': ' + this.time, x + 10, y -35, '14px sans-serif', color, 'left');
+        this.textObj = ShapeGeneratorHelper.getLMSText(': ' + this.time, x + 10, y -35, color, 'left');
         this.state = 'paused';
         this.preState = 'paused';
         this.lastTFrame = 0;
