@@ -13,6 +13,9 @@ export interface OffYouGoConfig {
     stiarRisingSpeed: number;
     hpHealFromHeart: number;
     heartSize: number;
+    heartInitConfig: heartInitConfig;
+    hpBarConfig: hpBarConfig;
+    coinConfig : coinConfig;
     // frame rate control
     tickLength: number;
     playerSpeedX: number;
@@ -26,6 +29,7 @@ export interface OffYouGoConfig {
     // style here
     statusTextColor: string;
     specialTypeStairsRatio: SpecialTypeStairsRatio;
+    fpsText: fpsText;
     player1Assets: Array<string>;
     player2Assets: Array<string>;
 }
@@ -43,6 +47,12 @@ export const defaultOffYouGoConfig: OffYouGoConfig = {
     // hearts
     hpHealFromHeart: 0.3333,
     heartSize: 15,
+    heartInitConfig: {
+        x: 50,
+        y: 100,
+        size: 15,
+        color: '#FF0000'
+    },
     // frame rate control
     tickLength: 5,
     playerSpeedX: 350,
@@ -54,6 +64,29 @@ export const defaultOffYouGoConfig: OffYouGoConfig = {
         SpikeStair: 0.15,
         FadeOutStair: 0.15,
         CollapseStair: 0.15,
+    },
+    fpsText: {
+        text: '',
+        xOffset: 60,
+        yPosition: 20,
+        color: '#0095DD',
+        align: 'left'
+    },
+    hpBarConfig: {
+        x: 10,
+        y: 5,
+        width: 75,
+        height: 15,
+        bgColor: 'rgba(255, 255, 255, 0.5)',
+        borderColor: 'rgba(194, 0, 0, 0.5)',
+        hpColor: 'rgba(255, 0, 0, 0.5)',
+        hp: 1,
+        borderWidth: 2,
+    },
+    coinConfig: {
+        thickness: 2,
+        r: 6,
+        r2: 4
     },
     stairDuration: 1000, // 1 second
     heartSpwanChance: 0.1,
@@ -84,6 +117,39 @@ export interface GameStage {
     };
 
     config: Partial<OffYouGoConfig>;
+}
+
+export interface fpsText {
+    text: string,
+    xOffset: number,
+    yPosition: number,
+    color: string,
+    align: string
+}
+
+export interface heartInitConfig {
+    x: number,
+    y: number,
+    size: number,
+    color: string
+}
+
+export interface hpBarConfig {
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    bgColor: string,
+    borderColor: string,
+    hpColor: string,
+    hp: number,
+    borderWidth: number,
+}
+
+export interface coinConfig {
+    thickness: number,
+    r: number,
+    r2: number
 }
 
 export type StageConfig = Array<GameStage>;

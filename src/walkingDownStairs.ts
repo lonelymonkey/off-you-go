@@ -3,9 +3,10 @@ import { UserControl } from './walkDownStairs.userControl';
 import { LMS_GameRenderer } from '../lib/lms-games/LMS_GameRenderer.js';
 import { Player, WalkDownStairTimer, WalkDownStairStatus, NormalStair } from './shape';
 import { OffYouGoConfig, defaultOffYouGoConfig, StageConfig, defaultStageConfig, KeyValuePair } from './_models/config';
-import { MathHelper, ShapeGeneratorHelper } from './_helpers';
+import { MathHelper } from './_helpers';
 import { GameStore } from './_models/game-store';
 import { GameController } from './_models/game-controller';
+import { LMS_Text, LMS_heart, LMS_HpBar } from '../lib/lms-games/generic-shape.js';
 
 export class WalkDownStairs {
     private container: HTMLElement;
@@ -50,12 +51,12 @@ export class WalkDownStairs {
         this.stage0Config = { ...this.config };
         this.container = document.getElementById(id);
         this.createCanvas();
-        this.gameStore.fpsObj = ShapeGeneratorHelper.getLMSText('', this.canvas.width - 60, 20, '#0095DD', 'left');
+        this.gameStore.fpsObj = this.getFPSText();
         // load user control
         this.gameManager.userControl.load(this.canvasUI);
 
         // test drawing
-        const heart = ShapeGeneratorHelper.getLMSHeart(50, 100, 15, '#FF0000', this.config.stiarRisingSpeed);
+        const heart = this.getHeart();
         this.gameStore.shapeObjects.hearts.push(heart);
 
         Promise.all(this.getPlayerAssets())
@@ -80,6 +81,30 @@ export class WalkDownStairs {
     resume(): void {
         this.control.init();
         this.main();
+    }
+
+    private getFPSText(): LMS_Text {
+        const fpsTextconfig = this.config.fpsText; 
+
+        return new LMS_Text({
+            text: fpsTextconfig.text,
+            x: this.canvas.width - fpsTextconfig.xOffset,
+            y: fpsTextconfig.yPosition,
+            font: '14px sans-serif',
+            color: fpsTextconfig.color,
+            align: fpsTextconfig.align
+        });
+    }
+
+    private getHeart(): LMS_heart {
+        return new LMS_heart({
+            ...this.config.heartInitConfig,
+            dy: this.config.stiarRisingSpeed,
+        });
+    }
+
+    private getHpBar(): LMS_HpBar {
+        return new LMS_HpBar(this.config.hpBarConfig);
     }
 
     private initializeView(config: OffYouGoConfig, canvas: HTMLCanvasElement): void {
@@ -118,7 +143,7 @@ export class WalkDownStairs {
         });
 
         this.gameStore.shapeObjects.players.push(player);
-        const hpBar = ShapeGeneratorHelper.getLMSHpBar(10, 5, 75, 15, 'rgba(255, 255, 255, 0.5)', 'rgba(194, 0, 0, 0.5)', 'rgba(255, 0, 0, 0.5)', 1, 2);
+        const hpBar = this.getHpBar();
         const status = new WalkDownStairStatus({ x: canvas.width / 2 - 20, y: 20, color: config.statusTextColor });
         const timer = new WalkDownStairTimer({ x: canvas.width / 2 + 75, y: 55, color: config.statusTextColor });
 

@@ -50,14 +50,18 @@ export class CollapseStair extends Stairs {
                 this.unitHeight - 2 * this.borderWidth);
         }
 
-        if (this.crackPercentage > 0.1) {
-            const collapse = this.getLMSCollapse();
-            collapse.draw(tFrame, ctx, canvas);
-        }
+        this.drawCrack(tFrame, ctx, canvas);
         ctx.restore();
     }
 
-    private getLMSCollapse(): LMS_collapse {
+    private drawCrack(tFrame: number, ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement): void {
+        if (this.crackPercentage > 0.1) {
+            const collapse = this.getCrack();
+            collapse.draw(tFrame, ctx, canvas);
+        }
+    }
+
+    private getCrack(): LMS_collapse {
         return new LMS_collapse({
             x1: this.x,
             y1: this.y,

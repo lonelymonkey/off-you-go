@@ -39,17 +39,21 @@ export class BumpyStair extends Stairs {
         ctx.fillRect(this.x + this.borderWidth, this.y + this.borderWidth,
             this.unitWidth * this.length - 2 * this.borderWidth,
             this.unitHeight - 2 * this.borderWidth);
-        for (let i = 0; i < this.length; i++) {
-            if (i > 0 && i < this.length) {
-                const spring = this.getLMSSpring(i);
-                spring.draw(tFrame, ctx, canvas);
-            }
-        }
+        this.drawSpring(tFrame, ctx, canvas);
         ctx.restore();
     }
 
-    private getLMSSpring(index: number): LMS_spring {
-        const posX = this.x + this.borderWidth + index * (this.unitWidth);
+    private drawSpring(tFrame: number, ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement):void {
+        for (let pos = 0; pos < this.length; pos++) {
+            if (pos > 0 && pos < this.length) {
+                const spring = this.getSpring(pos);
+                spring.draw(tFrame, ctx, canvas);
+            }
+        }
+    }
+
+    private getSpring(position: number): LMS_spring {
+        const posX = this.x + this.borderWidth + position * (this.unitWidth);
         return new LMS_spring({
             x1: posX,
             y1: this.y + 2,

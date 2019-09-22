@@ -1,6 +1,5 @@
 import { SpikeStairOptions } from '../../_models/shape_model';
 import { Stairs } from './stairs-shape';
-import { ShapeGeneratorHelper } from '../../_helpers';
 import { LMS_spike } from '../../../lib/lms-games/generic-shape.js';
 
 export class SpikeStair extends Stairs {
@@ -50,14 +49,20 @@ export class SpikeStair extends Stairs {
             ctx.fillRect(posX, this.y + this.borderWidth + this.spikeLegnth,
                 this.unitWidth - 2 * this.borderWidth,
                 this.unitHeight - this.spikeLegnth - 2 * this.borderWidth);
-            const needle = this.getLMSSpike(i);
-            needle.draw(tFrame, ctx, canvas);
         }
+        this.drawSpike(tFrame, ctx, canvas);
         ctx.restore();
     }
 
-    private getLMSSpike(index: number): LMS_spike {
-        const posX = this.x + index * this.unitWidth;
+    private drawSpike(tFrame: number, ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement):void {
+        for (let pos = 0; pos < this.length; pos++) {
+            const needle = this.getSpike(pos);
+            needle.draw(tFrame, ctx, canvas);
+        }
+    }
+
+    private getSpike(position: number): LMS_spike {
+        const posX = this.x + position * this.unitWidth;
         return new LMS_spike({
             x1: posX,
             y1: this.y + this.spikeLegnth,

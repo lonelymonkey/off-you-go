@@ -3,7 +3,7 @@ import { Player, BumpyStair, SpikeStair, FadeOutStair, CollapseStair, NormalStai
 import { OffYouGoConfig } from './_models/config.js';
 import { GameStore } from './_models/game-store';
 import { GameController } from './_models/game-controller';
-import { MathHelper, ShapeGeneratorHelper } from './_helpers';
+import { MathHelper } from './_helpers';
 import { StageConfig } from './_models/config';
 import { PlayerControlSignal } from './_models/game-controller';
 
@@ -164,14 +164,14 @@ export class Processor {
         const spawnCoin = ( Math.random() <= config.coinSpawnChance );
         if ( spawnHeart ) {
           const randomHeartXPos = MathHelper.randomInteger( stair.x, stair.x + stair.unitWidth * stair.length );
-          const heart = ShapeGeneratorHelper.getLMSHeart(randomHeartXPos, stair.y - 10, config.heartSize, '#FF0000', config.stiarRisingSpeed);
+          const heart = this.getRandomHeart(randomHeartXPos, stair.y - 10, config);
           this.gameStore.shapeObjects.hearts.push( heart );
         } else if ( spawnCoin ) {
           // random coins
           const numCoins = MathHelper.randomInteger(1, 5);
           let startPosX = MathHelper.randomInteger( stair.x, stair.x + stair.unitWidth * stair.length - (6 + 10) * numCoins );
           for (let i = 0; i < numCoins; i++) {
-            const coin = ShapeGeneratorHelper.getLMSCoin(startPosX, stair.y - 6, 2, 6, 4, config.stiarRisingSpeed);
+            const coin = this.getCoin(startPosX, stair.y - 6, config);
             this.gameStore.shapeObjects.coins.push( coin );
             startPosX += 6 + 10;
           }
@@ -381,5 +381,24 @@ export class Processor {
     this.advanceLevel(config, stageConfig);
     // paint the fps text last so it's on top of everything else
     this.gameStore.fpsObj.text = `FPS: ${this.gameStore.frameRate}`;
+  }
+
+  private getRandomHeart(x: number, y: number, config: OffYouGoConfig): LMS_heart {
+    return new LMS_heart({
+      x: x,
+      y: y,
+      size: config.heartInitConfig.size,
+      color: config.heartInitConfig.color,
+      dy: config.stiarRisingSpeed,
+    });
+  }
+
+  private getCoin(x: number, y: number, config: OffYouGoConfig): LMS_coin{
+    return new LMS_coin({
+        x: x,
+        y: y,
+        ...config.coinConfig,
+        dy: config.stiarRisingSpeed
+    });
   }
 }
