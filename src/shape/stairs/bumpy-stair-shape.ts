@@ -1,6 +1,6 @@
 import { BumpyStairOptions } from '../../_models/shape_model';
-import { LMS_spring } from '../../../lib/lms-games/generic-shape.js';
 import { Stairs } from './stairs-shape';
+import { LMS_spring } from '../../../lib/lms-games/generic-shape.js';
 
 export class BumpyStair extends Stairs {
     x: number;
@@ -39,17 +39,32 @@ export class BumpyStair extends Stairs {
         ctx.fillRect(this.x + this.borderWidth, this.y + this.borderWidth,
             this.unitWidth * this.length - 2 * this.borderWidth,
             this.unitHeight - 2 * this.borderWidth);
-        for (let i = 0; i < this.length; i++) {
-            const posX = this.x + this.borderWidth + i * (this.unitWidth);
-            if (i > 0 && i < this.length) {
-                const spring = new LMS_spring({
-                    x1: posX, y1: this.y + 2, x2: posX, y2: this.y + this.unitHeight - 2,
-                    windings: 2, width: 10, offset: 1, col1: '#1caf9f', col2: '#1caf9f',
-                    lineWidth: 2
-                });
+        this.drawSpring(tFrame, ctx, canvas);
+        ctx.restore();
+    }
+
+    private drawSpring(tFrame: number, ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement):void {
+        for (let pos = 0; pos < this.length; pos++) {
+            if (pos > 0 && pos < this.length) {
+                const spring = this.getSpring(pos);
                 spring.draw(tFrame, ctx, canvas);
             }
         }
-        ctx.restore();
+    }
+
+    private getSpring(position: number): LMS_spring {
+        const posX = this.x + this.borderWidth + position * (this.unitWidth);
+        return new LMS_spring({
+            x1: posX,
+            y1: this.y + 2,
+            x2: posX,
+            y2: this.y + this.unitHeight - 2,
+            windings: 2,
+            width: 10,
+            offset: 1,
+            col1: '#1caf9f',
+            col2: '#1caf9f',
+            lineWidth: 2
+        });
     }
 }

@@ -163,25 +163,15 @@ export class Processor {
         const spawnHeart = ( Math.random() <= config.heartSpwanChance );
         const spawnCoin = ( Math.random() <= config.coinSpawnChance );
         if ( spawnHeart ) {
-          const heart = new LMS_heart({
-            x: MathHelper.randomInteger( stair.x, stair.x + stair.unitWidth * stair.length ),
-            y: stair.y - 10,
-            size: config.heartSize,
-            color: '#FF0000',
-            dy: config.stiarRisingSpeed,
-          });
+          const randomHeartXPos = MathHelper.randomInteger( stair.x, stair.x + stair.unitWidth * stair.length );
+          const heart = this.getRandomHeart(randomHeartXPos, stair.y - 10, config);
           this.gameStore.shapeObjects.hearts.push( heart );
         } else if ( spawnCoin ) {
           // random coins
           const numCoins = MathHelper.randomInteger(1, 5);
           let startPosX = MathHelper.randomInteger( stair.x, stair.x + stair.unitWidth * stair.length - (6 + 10) * numCoins );
           for (let i = 0; i < numCoins; i++) {
-            const coin = new LMS_coin({
-              x: startPosX,
-              y: stair.y - 6, thickness: 2,
-              r: 6, r2: 4,
-              dy: config.stiarRisingSpeed,
-            });
+            const coin = this.getCoin(startPosX, stair.y - 6, config);
             this.gameStore.shapeObjects.coins.push( coin );
             startPosX += 6 + 10;
           }
@@ -391,5 +381,24 @@ export class Processor {
     this.advanceLevel(config, stageConfig);
     // paint the fps text last so it's on top of everything else
     this.gameStore.fpsObj.text = `FPS: ${this.gameStore.frameRate}`;
+  }
+
+  private getRandomHeart(x: number, y: number, config: OffYouGoConfig): LMS_heart {
+    return new LMS_heart({
+      x: x,
+      y: y,
+      size: config.heartInitConfig.size,
+      color: config.heartInitConfig.color,
+      dy: config.stiarRisingSpeed,
+    });
+  }
+
+  private getCoin(x: number, y: number, config: OffYouGoConfig): LMS_coin{
+    return new LMS_coin({
+        x: x,
+        y: y,
+        ...config.coinConfig,
+        dy: config.stiarRisingSpeed
+    });
   }
 }

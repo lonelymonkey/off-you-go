@@ -4,6 +4,7 @@ import { LMS_Text, LMS_hourglass } from '../../lib/lms-games/generic-shape.js';
 export class WalkDownStairTimer {
     x: number;
     y: number;
+    color: string;
     hourGlass: LMS_hourglass;
     time: number;
     textObj: LMS_Text;
@@ -15,17 +16,10 @@ export class WalkDownStairTimer {
         const { x, y, color } = options;
         this.x = x;
         this.y = y;
-        this.hourGlass = new LMS_hourglass({
-            x: this.x, y: this.y, width: 13, height: 14, color: color,
-        });
+        this.color = color;
+        this.hourGlass = this.getHourglass();
         this.time = 0;
-        this.textObj = new LMS_Text({
-            text: ': ' + this.time,
-            x: x + 10, y: y - 35,
-            font: '14px sans-serif',
-            color: color,
-            align: 'left',
-        });
+        this.textObj = this.getText();
         this.state = 'paused';
         this.preState = 'paused';
         this.lastTFrame = 0;
@@ -50,5 +44,26 @@ export class WalkDownStairTimer {
 
     pause(): void {
         this.state = 'paused';
+    }
+
+    private getHourglass(): LMS_hourglass {
+        return new LMS_hourglass({
+            x: this.x,
+            y: this.y,
+            width: 13,
+            height: 14,
+            color: this.color,
+        });
+    }
+
+    private getText(): LMS_Text {
+        return new LMS_Text({
+            text: ': ' + this.time,
+            x: this.x + 10,
+            y: this.y - 35,
+            font: '14px sans-serif',
+            color: this.color,
+            align: 'left',
+        });
     }
 }
